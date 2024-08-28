@@ -2,7 +2,7 @@ FROM golang:alpine AS build-env
 WORKDIR $GOPATH/src/github.com/ironcore864/my-sample-service
 COPY . .
 RUN apk add git
-RUN go get ./... && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o my-sample-service
+RUN go get ./... && CGO_ENABLED=0 GOOS=linux go build -o my-sample-service
 
 FROM alpine
 WORKDIR /app
