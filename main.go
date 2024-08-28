@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"log"
-	"math/rand"
 	"net/http"
 	"os/exec"
 	"time"
@@ -16,7 +15,6 @@ func main() {
 
 	router.GET("/", homePage)
 	router.GET("/backup-db", backupDB)
-	router.GET("/health", healthCheck)
 
 	router.Run()
 }
@@ -43,16 +41,7 @@ func backupDB(c *gin.Context) {
 func sendPebbleNotification() error {
 	cmd := exec.Command("/charm/bin/pebble", "notify", "guotiexin.com/db/backup", "path=/tmp/mydb.sql")
 	if err := cmd.Run(); err != nil {
-		log.Println(err)
 		return errors.Join(errors.New("couldn't execute a pebble notify: "), err)
 	}
 	return nil
-}
-
-func healthCheck(c *gin.Context) {
-	if rand.Intn(10) == 0 {
-		c.String(http.StatusInternalServerError, "Health check failed")
-		return
-	}
-	c.String(http.StatusOK, "Health check passed")
 }
