@@ -43,7 +43,6 @@ func backupDB(c *gin.Context) {
 func sendPebbleNotification() error {
 	cmd := exec.Command("/charm/bin/pebble", "notify", "guotiexin.com/db/backup", "path=/tmp/mydb.sql")
 	if err := cmd.Run(); err != nil {
-		log.Println(err)
 		return errors.Join(errors.New("couldn't execute a pebble notify: "), err)
 	}
 	return nil
